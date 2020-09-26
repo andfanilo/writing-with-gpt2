@@ -49,5 +49,6 @@ def generate_sentences(body: InputSentence):
         return []
     generated = generator(body.text, max_length=30, num_return_sequences=5)
     return [
-        {"id": ind, "value": v["generated_text"]} for ind, v in enumerate(generated)
+        {"id": ind, "value": v["generated_text"].replace(body.text, "")}
+        for ind, v in enumerate(generated)
     ]
