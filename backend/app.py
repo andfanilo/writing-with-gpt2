@@ -45,7 +45,7 @@ def get_status():
 
 @app.post("/api/suggest", response_model=List[OutputSuggestion])
 def generate_sentences(body: InputSentence):
-    if(body.text==""):
+    if body.text == "":
         return []
     generated = generator(body.text, max_length=30, num_return_sequences=5)
     return [
