@@ -1,0 +1,4 @@
+fastapi==0.61.1
+transformers
+typer==0.3.2
+uvicorn==0.11.8

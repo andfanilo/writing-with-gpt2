@@ -2,17 +2,49 @@
 
 ![](./diagram.png)
 
-## Quickstart
+## Development
+
+#### Backend
+
+Make sure you are in the `src` folder:
 
 ```sh
-pip install *.whl
+cd backend/
 ```
 
-## Development
+Using conda for now because Windows Pytorch.
+
+```sh
+#python3 -m venv venv
+#. venv/bin/activate
+conda create -n write-with-transformer python=3.7
+conda activate write-with-transformer
+conda install pytorch cpuonly -c pytorch
+pip install -r requirements.txt
+```
+
+To run in hot module reloading mode:
+
+```sh
+uvicorn app:app --host 0.0.0.0 --reload
+```
+
+Env variables:
+
+- APP_NAME: change name of FastAPI app
+- MODEL_NAME: change huggingface model to use
+
+Runs on http://localhost:8000. See interactive docs on http://localhost:8000/docs to play with API.
+
+To create a production wheel:
+
+```sh
+python setup.py sdist bdist_wheel
+```
 
 #### Frontend
 
-Make sure you are in the frontend folder:
+Make sure you are in the frontend folder, and ensure backend API is working.
 
 ```sh
 cd frontend/
@@ -30,7 +62,7 @@ To run in hot module reloading mode:
 npm run start
 ```
 
-Runs on http://localhost:3000
+Web app now available on http://localhost:3000.
 
 To create a production build:
 
@@ -42,42 +74,6 @@ Test the production bundle:
 
 ```sh
 serve -s build
-```
-
-#### Backend
-
-Make sure you are in the `src` folder:
-
-```sh
-cd backend/
-```
-
-Using conda for now because Windows.
-
-```sh
-python3 -m venv venv
-. venv/bin/activate
-conda install pytorch cpuonly -c pytorch
-pip install -e .
-```
-
-To run in hot module reloading mode:
-
-```sh
-uvicorn app:app --host 0.0.0.0 --reload
-```
-
-Env variables:
-
-- APP_NAME: change name of FastAPI app
-- MODEL_NAME: change huggingface model to use
-
-Runs on http://localhost:8000. See interactive docs on http://localhost:8000/docs.
-
-To create a production wheel (do it after running the frontend build, else you'll be missing the web app)
-
-```sh
-python setup.py sdist bdist_wheel
 ```
 
 ## References
