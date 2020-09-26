@@ -36,12 +36,6 @@ Env variables:
 
 Runs on http://localhost:8000. See interactive docs on http://localhost:8000/docs to play with API.
 
-To create a production wheel:
-
-```sh
-python setup.py sdist bdist_wheel
-```
-
 #### Frontend
 
 Make sure you are in the frontend folder, and ensure backend API is working.
@@ -75,6 +69,8 @@ Test the production bundle:
 ```sh
 serve -s build
 ```
+
+Move the `build` folder contents to your server.
 
 ## References
 
