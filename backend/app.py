@@ -43,8 +43,10 @@ def get_status():
     return {"Hello": "World"}
 
 
-@app.post("/api/generate", response_model=List[OutputSuggestion])
+@app.post("/api/suggest", response_model=List[OutputSuggestion])
 def generate_sentences(body: InputSentence):
+    if(body.text==""):
+        return []
     generated = generator(body.text, max_length=30, num_return_sequences=5)
     return [
         {"id": ind, "value": v["generated_text"]} for ind, v in enumerate(generated)

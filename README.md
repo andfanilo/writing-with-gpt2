@@ -86,3 +86,4 @@ python setup.py sdist bdist_wheel
 - [React-Quill-Demo](https://codesandbox.io/s/tn2x3)
 - [How To Create a React + Flask Project](https://blog.miguelgrinberg.com/post/how-to-create-a-react--flask-project)
 - [How to Deploy a React + Flask Project](https://blog.miguelgrinberg.com/post/how-to-deploy-a-react--flask-project)
+- [Interactive Playground - Autosave](https://quilljs.com/playground/#autosave)
