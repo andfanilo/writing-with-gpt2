@@ -1,4 +1,6 @@
-# Writing with Transformers
+# Writing with GPT-2
+
+![](./diagram.png)
 
 ## Quickstart
 
@@ -47,7 +49,7 @@ serve -s build
 Make sure you are in the `src` folder:
 
 ```sh
-cd src/
+cd backend/
 ```
 
 Using conda for now because Windows.
@@ -64,6 +66,11 @@ To run in hot module reloading mode:
 ```sh
 uvicorn app:app --host 0.0.0.0 --reload
 ```
+
+Env variables:
+
+- APP_NAME: change name of FastAPI app
+- MODEL_NAME: change huggingface model to use
 
 Runs on http://localhost:8000. See interactive docs on http://localhost:8000/docs.
 
