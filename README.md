@@ -83,3 +83,4 @@ serve -s build
 - [How To Create a React + Flask Project](https://blog.miguelgrinberg.com/post/how-to-create-a-react--flask-project)
 - [How to Deploy a React + Flask Project](https://blog.miguelgrinberg.com/post/how-to-deploy-a-react--flask-project)
 - [Interactive Playground - Autosave](https://quilljs.com/playground/#autosave)
+- [Mentions implementation](https://github.com/zenoamaro/react-quill/issues/324)

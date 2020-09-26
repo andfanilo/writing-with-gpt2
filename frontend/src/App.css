@@ -17,3 +17,7 @@ body {
   margin-top: 60px;
   padding: 0 2em;
 }
+.mention {
+  background-color: white;
+  user-select: text;
+}

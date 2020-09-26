@@ -1,13 +1,17 @@
 import React, { useCallback, useRef, useState } from "react"
-import ReactQuill from "react-quill"
+import ReactQuill, { Quill } from "react-quill"
 import axios from "axios"
 import "quill-mention"
 import "quill-mention/dist/quill.mention.css"
 import "./App.css"
 
+// Use a customized render of suggestions in text editor
+import CustomMentionBlot from "./blots/CustomMentionBlot"
+Quill.register(CustomMentionBlot)
+
 const App = () => {
-  const [value, setValue] = useState("")
-  const reactQuillRef = useRef()
+  const [value, setValue] = useState("") // INTERNAL, don't interfere
+  const reactQuillRef = useRef() // get access to editor
 
   const handleLoadingMentionEvent = useCallback(() => {
     return "Loading..."
@@ -55,6 +59,7 @@ const App = () => {
   const mentionConfig = {
     allowedChars: /^[A-Za-z\s]*$/,
     mentionDenotationChars: ["@"],
+    blotName: "custom_mention",
     renderLoading: handleLoadingMentionEvent,
     source: handleFetchMentionEvent,
   }
@@ -76,7 +81,7 @@ const App = () => {
     "indent",
     "link",
     "image",
-    "mention",
+    "custom_mention",
   ]
 
   return (
