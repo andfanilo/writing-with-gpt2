@@ -13,8 +13,10 @@ import CustomMentionBlot from "./blots/CustomMentionBlot"
 Quill.register(CustomMentionBlot)
 
 const App = () => {
-  const [value, setValue] = useState(store.get("editorContent", "")) // HTML Quill-optimized
-  const reactQuillRef = useRef() // get access to editor
+  const [editorContent, setEditorContent] = useState(
+    store.get("editorContent", "")
+  ) // HTML content of editor, optimized and usable by Quill
+  const reactQuillRef = useRef() // Ref access to editor
 
   const handleLoadingMentionEvent = useCallback(() => {
     return "Loading..."
@@ -22,21 +24,20 @@ const App = () => {
 
   const handleFetchMentionEvent = useCallback(
     async (searchTerm, renderItem) => {
-      const editorContents = reactQuillRef.current.getEditor().getText()
+      const editorContentAsText = reactQuillRef.current.getEditor().getText()
       // TODO: API error handling
       const response = await axios.post("http://localhost:8000/api/suggest", {
-        text: editorContents,
+        text: editorContentAsText,
       })
       const suggestions = response["data"]
-
       renderItem(suggestions, searchTerm)
     },
     []
   )
 
-  const handleValueEdit = useCallback((content) => {
+  const handleEditorContentEdit = useCallback((content) => {
     store.set("editorContent", content)
-    setValue(content)
+    setEditorContent(content)
   }, [])
 
   const toolbarConfig = [
@@ -89,10 +90,10 @@ const App = () => {
         placeholder="Enter something..."
         modules={modules}
         formats={formats}
-        value={value}
-        onChange={handleValueEdit}
+        value={editorContent}
+        onChange={handleEditorContentEdit}
       />
-      <button style={{ marginTop: "1em" }} onClick={() => setValue("")}>
+      <button style={{ marginTop: "1em" }} onClick={() => setEditorContent("")}>
         Clear editor
       </button>
     </div>
