@@ -80,3 +80,4 @@ Move the `build` folder contents to your server.
 - [How to Deploy a React + Flask Project](https://blog.miguelgrinberg.com/post/how-to-deploy-a-react--flask-project)
 - [Interactive Playground - Autosave](https://quilljs.com/playground/#autosave)
 - [Mentions implementation](https://github.com/zenoamaro/react-quill/issues/324)
+- [Cloning Medium with Parchment](https://quilljs.com/guides/cloning-medium-with-parchment/)

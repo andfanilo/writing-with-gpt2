@@ -1,28 +1,12 @@
 import { Quill } from "react-quill"
 
-const Embed = Quill.import("blots/embed");
+const Inline = Quill.import("blots/inline");
 
-class CustomMentionBlot extends Embed {
+class CustomMentionBlot extends Inline {
     static create(data) {
         const node = super.create();
-        const denotationChar = document.createElement("span");
-        denotationChar.className = "ql-mention-denotation-char";
-        denotationChar.innerHTML = data.value;
-        denotationChar.setAttribute('contenteditable', true);
-        node.appendChild(denotationChar);
-        return CustomMentionBlot.setDataValues(node, data);
-    }
-
-    static setDataValues(element, data) {
-        const domNode = element;
-        Object.keys(data).forEach(key => {
-            domNode.dataset[key] = data[key];
-        });
-        return domNode;
-    }
-
-    static value(domNode) {
-        return domNode.dataset;
+        node.innerHTML = data.value;
+        return node;
     }
 }
 

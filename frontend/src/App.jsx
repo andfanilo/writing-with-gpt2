@@ -26,22 +26,14 @@ const App = () => {
       })
       const suggestions = response["data"]
 
-      if (searchTerm.length === 0) {
-        renderItem(suggestions, searchTerm)
-      } else {
-        const matches = []
-        for (let i = 0; i < suggestions.length; i++)
-          if (
-            ~suggestions[i].value
-              .toLowerCase()
-              .indexOf(searchTerm.toLowerCase())
-          )
-            matches.push(suggestions[i])
-        renderItem(matches, searchTerm)
-      }
+      renderItem(suggestions, searchTerm)
     },
     []
   )
+
+  const handleValueEdit = (content, delta, source, editor) => {
+    setValue(content)
+  }
 
   const toolbarConfig = [
     [{ header: [1, 2, false] }],
@@ -94,7 +86,7 @@ const App = () => {
         modules={modules}
         formats={formats}
         value={value}
-        onChange={setValue}
+        onChange={handleValueEdit}
       />
     </div>
   )
