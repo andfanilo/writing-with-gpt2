@@ -26,7 +26,7 @@ const App = () => {
     async (searchTerm, renderItem) => {
       const editorContentAsText = reactQuillRef.current.getEditor().getText()
       // TODO: API error handling
-      const response = await axios.post("http://localhost:8000/api/suggest", {
+      const response = await axios.post("/api/suggest", {
         text: editorContentAsText,
       })
       const suggestions = response["data"]
