@@ -1,5 +1,5 @@
 fastapi==0.61.1
 gpt-2-simple
-tensorflow==1.15.2 # tensorflow-gpu==1.15.2
+tensorflow==1.15.4 # tensorflow-gpu==1.15.4
 typer==0.3.2
 uvicorn==0.11.8
