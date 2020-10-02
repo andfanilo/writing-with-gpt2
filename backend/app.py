@@ -1,45 +1,19 @@
 import gc
 import logging
 import os
-from typing import List
 
 import gpt_2_simple as gpt2
 import tensorflow as tf
-import uvicorn
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from pydantic import BaseSettings
+from starlette.applications import Starlette
+from starlette.responses import UJSONResponse
+from starlette.routing import Route
+
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # or any {'0', '1', '2'}
 logging.getLogger("tensorflow").setLevel(logging.FATAL)
 
-
-class Settings(BaseSettings):
-    app_name: str = "Writing with Transformer - server"
-    model_name: str = "124M"
-
-
-class InputSentence(BaseModel):
-    text: str
-
-
-class OutputSuggestion(BaseModel):
-    id: int
-    value: str
-
-
-settings = Settings()
-app = FastAPI()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-model_name: str = settings.model_name
+response_header = {"Access-Control-Allow-Origin": "*"}
+model_name = "124M"
 
 if not os.path.isdir(os.path.join("models", model_name)):
     print(f"Downloading {model_name} model...")
@@ -52,25 +26,27 @@ gpt2.load_gpt2(sess, model_name=model_name)
 generate_count: int = 0
 
 
-@app.get("/api/status")
-def get_status():
-    return {"Hello": "World"}
+async def status():
+    return UJSONResponse({"hello": "world"}, headers=response_header)
 
 
-@app.post("/api/suggest", response_model=List[OutputSuggestion])
-def generate_sentences(body: InputSentence):
+async def suggest(request):
     global generate_count
     global sess
 
-    if body.text == "":
+    params = await request.json()
+
+    if params["text"] == "":
         return []
 
     generated = gpt2.generate(
         sess,
         model_name=model_name,
-        prefix=body.text[:500],
+        length=10,
+        prefix=params["text"][:500],
         temperature=0.7,
         top_p=0.9,
+        nsamples=5,
         return_as_list=True,
         include_prefix=False,
     )
@@ -85,8 +61,18 @@ def generate_sentences(body: InputSentence):
         generate_count = 0
 
     gc.collect()
-    return [
-        {"id": ind, "value": v["generated_text"].replace(body.text, "")}
-        for ind, v in enumerate(generated)
-    ]
+    return UJSONResponse(
+        [
+            {"id": ind, "value": v.replace(params["text"], "")}
+            for ind, v in enumerate(generated)
+        ]
+    )
 
+
+app = Starlette(
+    debug=True,
+    routes=[
+        Route("/api/status", status, methods=["GET"]),
+        Route("/api/suggest", suggest, methods=["POST"]),
+    ],
+)
