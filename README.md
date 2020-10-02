@@ -12,14 +12,13 @@ Make sure you are in the `src` folder:
 cd backend/
 ```
 
-Using conda for now because Windows Pytorch.
+Install environment
 
 ```sh
 #python3 -m venv venv
 #. venv/bin/activate
 conda create -n write-with-transformer python=3.7
 conda activate write-with-transformer
-conda install pytorch cpuonly -c pytorch
 pip install -r requirements.txt
 ```
 
@@ -81,3 +80,4 @@ Move the `build` folder contents to your server.
 - [Interactive Playground - Autosave](https://quilljs.com/playground/#autosave)
 - [Mentions implementation](https://github.com/zenoamaro/react-quill/issues/324)
 - [Cloning Medium with Parchment](https://quilljs.com/guides/cloning-medium-with-parchment/)
+- [gpt-2-cloud-run](https://github.com/minimaxir/gpt-2-cloud-run)
