@@ -31,7 +31,11 @@ uvicorn app:app --host 0.0.0.0 --reload
 Env variables:
 
 - APP_NAME: change name of FastAPI app
-- MODEL_NAME: change huggingface model to use
+- MODEL_NAME: change size of predefined model to use
+  - `124M` (default): the "small" model, 500MB on disk.
+  - `355M`: the "medium" model, 1.5GB on disk
+  - `774M`: the "large" model, can only be finetuned with a Tesla P100 GPU
+  - `1558M`: the "extra large", true model, can only be finetuned with a Tesla P100 GPU
 
 Runs on http://localhost:8000. See interactive docs on http://localhost:8000/docs to play with API.
 
