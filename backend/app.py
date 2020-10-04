@@ -6,6 +6,7 @@ import gpt_2_simple as gpt2
 import tensorflow as tf
 import uvicorn
 from starlette.applications import Starlette
+from starlette.config import Config
 from starlette.responses import UJSONResponse
 from starlette.routing import Route
 
@@ -14,7 +15,9 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # or any {'0', '1', '2'}
 logging.getLogger("tensorflow").setLevel(logging.FATAL)
 
 response_header = {"Access-Control-Allow-Origin": "*"}
-model_name = "124M"
+
+config = Config(".env")
+model_name = config("MODEL_NAME", cast=str, default="124M")
 
 if not os.path.isdir(os.path.join("models", model_name)):
     print(f"Downloading {model_name} model...")

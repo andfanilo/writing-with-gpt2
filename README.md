@@ -30,6 +30,15 @@ uvicorn app:app --host 0.0.0.0 --reload
 
 Runs on http://localhost:8000.
 
+Configuration is made via environment variable or `.env` file. Available are:
+
+- **MODEL_NAME**: GPT-2 model to use. For now they all get stored in `models` folder at the root of the project. May be a pretrained (will be downloaded to `models` by `gpt-2-simple`) or finetuned model in folder in `models`:
+  - `124M` (default): the "small" model, 500MB on disk.
+  - `355M`: the "medium" model, 1.5GB on disk
+  - `774M`: the "large" model
+  - `1558M`: the "extra large", true model
+  - a custom folder inside the `models` folder.
+
 #### Frontend
 
 Make sure you are in the frontend folder, and ensure backend API is working.
