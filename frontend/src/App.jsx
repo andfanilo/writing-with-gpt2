@@ -18,6 +18,8 @@ const App = () => {
   ) // HTML content of editor, optimized and usable by Quill
   const reactQuillRef = useRef() // Ref access to editor
 
+  const [numSamples, setNumSamples] = useState(5)
+
   const handleLoadingMentionEvent = useCallback(() => {
     return "Loading..."
   }, [])
@@ -28,17 +30,22 @@ const App = () => {
       // TODO: API error handling
       const response = await axios.post("/api/suggest", {
         text: editorContentAsText,
+        nsamples: numSamples,
       })
       const suggestions = response["data"]
       renderItem(suggestions, searchTerm)
     },
-    []
+    [numSamples]
   )
 
   const handleEditorContentEdit = useCallback((content) => {
     store.set("editorContent", content)
     setEditorContent(content)
   }, [])
+
+  const handleInputChange = (event) => {
+    setNumSamples(event.target.value)
+  }
 
   const toolbarConfig = [
     [{ header: [1, 2, false] }],
@@ -84,6 +91,17 @@ const App = () => {
   return (
     <div>
       <h1>GPT-2 editor</h1>
+      <div style={{ margin: "1em 0" }}>
+        <label style={{ marginRight: "1em" }}>Number samples:</label>
+        <input
+          name="numSamples"
+          type="number"
+          min="3"
+          max="50"
+          value={numSamples}
+          onChange={handleInputChange}
+        ></input>
+      </div>
       <ReactQuill
         ref={reactQuillRef}
         theme="snow"
