@@ -83,7 +83,7 @@ const App = () => {
 
   return (
     <div>
-      <h1>Write with Transformer demo</h1>
+      <h1>GPT-2 editor</h1>
       <ReactQuill
         ref={reactQuillRef}
         theme="snow"

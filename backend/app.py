@@ -4,6 +4,7 @@ import os
 
 import gpt_2_simple as gpt2
 import tensorflow as tf
+import uvicorn
 from starlette.applications import Starlette
 from starlette.responses import UJSONResponse
 from starlette.routing import Route
@@ -26,7 +27,7 @@ gpt2.load_gpt2(sess, model_name=model_name)
 generate_count: int = 0
 
 
-async def status():
+async def status(request):
     return UJSONResponse({"hello": "world"}, headers=response_header)
 
 
@@ -42,11 +43,12 @@ async def suggest(request):
     generated = gpt2.generate(
         sess,
         model_name=model_name,
-        length=10,
+        length=int(params.get("length", 10)),
         prefix=params["text"][:500],
-        temperature=0.7,
-        top_p=0.9,
-        nsamples=5,
+        temperature=float(params.get("temperature", 0.7)),
+        top_k=int(params.get("top_k", 0)),
+        top_p=float(params.get("top_p", 0.9)),
+        nsamples=int(params.get("nsamples", 5)),
         return_as_list=True,
         include_prefix=False,
     )
@@ -76,3 +78,7 @@ app = Starlette(
         Route("/api/suggest", suggest, methods=["POST"]),
     ],
 )
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port="8000")
