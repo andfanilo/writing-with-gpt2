@@ -1,10 +1,11 @@
 import React, { useCallback, useRef, useState } from "react"
 import ReactQuill, { Quill } from "react-quill"
+import "react-quill/dist/quill.snow.css"
+import "quill-mention"
+import "quill-mention/dist/quill.mention.css"
 
 import axios from "axios"
 import store from "store"
-import "quill-mention"
-import "quill-mention/dist/quill.mention.css"
 
 import "./App.css"
 
