@@ -19,7 +19,11 @@ const App = () => {
   ) // HTML content of editor, optimized and usable by Quill
   const reactQuillRef = useRef() // Ref access to editor
 
-  const [numSamples, setNumSamples] = useState(5)
+  const [requestConfig, setRequestConfig] = useState({
+    numSamples: 5,
+    lengthSample: 10,
+    lengthPrefix: 500,
+  })
 
   const handleLoadingMentionEvent = useCallback(() => {
     return "Loading..."
@@ -28,15 +32,20 @@ const App = () => {
   const handleFetchMentionEvent = useCallback(
     async (searchTerm, renderItem) => {
       const editorContentAsText = reactQuillRef.current.getEditor().getText()
-      // TODO: API error handling
-      const response = await axios.post("/api/suggest", {
-        text: editorContentAsText,
-        nsamples: numSamples,
-      })
-      const suggestions = response["data"]
-      renderItem(suggestions, searchTerm)
+      axios
+        .post("/api/suggest", {
+          text: editorContentAsText,
+          nsamples: requestConfig.numSamples,
+          length: requestConfig.lengthSample,
+          lengthprefix: requestConfig.lengthPrefix,
+        })
+        .then((response) => {
+          const suggestions = response["data"]
+          renderItem(suggestions, searchTerm)
+        })
+        .catch((err) => alert(err))
     },
-    [numSamples]
+    [requestConfig]
   )
 
   const handleEditorContentEdit = useCallback((content) => {
@@ -45,7 +54,10 @@ const App = () => {
   }, [])
 
   const handleInputChange = (event) => {
-    setNumSamples(event.target.value)
+    setRequestConfig({
+      ...requestConfig,
+      [event.target.name]: event.target.value,
+    })
   }
 
   const toolbarConfig = [
@@ -108,15 +120,39 @@ const App = () => {
       </section>
       <aside className="sidebar">
         <div>
-          <label style={{ marginRight: "1em" }}>Number samples:</label>
-          <input
-            name="numSamples"
-            type="number"
-            min="3"
-            max="50"
-            value={numSamples}
-            onChange={handleInputChange}
-          ></input>
+          <label style={{ marginRight: "1em" }}>
+            Number samples:
+            <input
+              name="numSamples"
+              type="number"
+              min="3"
+              max="50"
+              value={requestConfig.numSamples}
+              onChange={handleInputChange}
+            ></input>
+          </label>
+          <label style={{ marginRight: "1em" }}>
+            Length samples:
+            <input
+              name="lengthSample"
+              type="number"
+              min="5"
+              max="500"
+              value={requestConfig.lengthSample}
+              onChange={handleInputChange}
+            ></input>
+          </label>
+          <label style={{ marginRight: "1em" }}>
+            Length prefix:
+            <input
+              name="lengthPrefix"
+              type="number"
+              min="50"
+              max="5000"
+              value={requestConfig.lengthPrefix}
+              onChange={handleInputChange}
+            ></input>
+          </label>
         </div>
         <button
           style={{ marginTop: "1em" }}

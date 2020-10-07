@@ -47,7 +47,7 @@ async def suggest(request):
         sess,
         model_name=model_name,
         length=int(params.get("length", 10)),
-        prefix=params["text"][:500],
+        prefix=params["text"][:int(params.get("lengthprefix", 500))],
         temperature=float(params.get("temperature", 0.7)),
         top_k=int(params.get("top_k", 0)),
         top_p=float(params.get("top_p", 0.9)),
