@@ -65,6 +65,7 @@ const App = () => {
     allowedChars: /^[A-Za-z\s]*$/,
     mentionDenotationChars: ["@"],
     blotName: "custom_mention",
+    fixMentionsToQuill: true,
     renderLoading: handleLoadingMentionEvent,
     source: handleFetchMentionEvent,
   }
@@ -91,30 +92,39 @@ const App = () => {
 
   return (
     <div>
-      <h1>GPT-2 editor</h1>
-      <div style={{ margin: "1em 0" }}>
-        <label style={{ marginRight: "1em" }}>Number samples:</label>
-        <input
-          name="numSamples"
-          type="number"
-          min="3"
-          max="50"
-          value={numSamples}
-          onChange={handleInputChange}
-        ></input>
-      </div>
-      <ReactQuill
-        ref={reactQuillRef}
-        theme="snow"
-        placeholder="Enter something..."
-        modules={modules}
-        formats={formats}
-        value={editorContent}
-        onChange={handleEditorContentEdit}
-      />
-      <button style={{ marginTop: "1em" }} onClick={() => setEditorContent("")}>
-        Clear editor
-      </button>
+      <header className="header">
+        <h1>GPT-2 editor</h1>
+      </header>
+      <section className="container">
+        <ReactQuill
+          ref={reactQuillRef}
+          theme="snow"
+          placeholder="Enter something..."
+          modules={modules}
+          formats={formats}
+          value={editorContent}
+          onChange={handleEditorContentEdit}
+        />
+      </section>
+      <aside className="sidebar">
+        <div>
+          <label style={{ marginRight: "1em" }}>Number samples:</label>
+          <input
+            name="numSamples"
+            type="number"
+            min="3"
+            max="50"
+            value={numSamples}
+            onChange={handleInputChange}
+          ></input>
+        </div>
+        <button
+          style={{ marginTop: "1em" }}
+          onClick={() => setEditorContent("")}
+        >
+          Clear editor
+        </button>
+      </aside>
     </div>
   )
 }
