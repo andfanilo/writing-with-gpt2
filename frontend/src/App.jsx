@@ -137,7 +137,7 @@ const App = () => {
               name="lengthSample"
               type="number"
               min="5"
-              max="500"
+              max="5000"
               value={requestConfig.lengthSample}
               onChange={handleInputChange}
             ></input>
@@ -147,7 +147,7 @@ const App = () => {
             <input
               name="lengthPrefix"
               type="number"
-              min="50"
+              min="5"
               max="5000"
               value={requestConfig.lengthPrefix}
               onChange={handleInputChange}

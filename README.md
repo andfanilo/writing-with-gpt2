@@ -85,3 +85,4 @@ Move the `build` folder contents to your server.
 - [Mentions implementation](https://github.com/zenoamaro/react-quill/issues/324)
 - [Cloning Medium with Parchment](https://quilljs.com/guides/cloning-medium-with-parchment/)
 - [gpt-2-cloud-run](https://github.com/minimaxir/gpt-2-cloud-run)
+- [How To Make Custom AI-Generated Text With GPT-2](https://minimaxir.com/2019/09/howto-gpt2/)

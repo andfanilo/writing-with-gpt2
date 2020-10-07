@@ -43,17 +43,18 @@ async def suggest(request):
     if params["text"] == "":
         return []
 
+    prefix = params["text"][-int(params.get("lengthprefix", 500)):]
+
     generated = gpt2.generate(
         sess,
         model_name=model_name,
         length=int(params.get("length", 10)),
-        prefix=params["text"][:int(params.get("lengthprefix", 500))],
+        prefix=prefix,
         temperature=float(params.get("temperature", 0.7)),
         top_k=int(params.get("top_k", 0)),
         top_p=float(params.get("top_p", 0.9)),
         nsamples=int(params.get("nsamples", 5)),
-        return_as_list=True,
-        include_prefix=False,
+        return_as_list=True
     )
 
     generate_count += 1
@@ -68,7 +69,7 @@ async def suggest(request):
     gc.collect()
     return UJSONResponse(
         [
-            {"id": ind, "value": v.replace(params["text"], "")}
+            {"id": ind, "value": v.split("@")[1].strip()}
             for ind, v in enumerate(generated)
         ]
     )
