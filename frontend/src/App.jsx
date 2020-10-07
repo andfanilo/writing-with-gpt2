@@ -78,6 +78,7 @@ const App = () => {
     mentionDenotationChars: ["@"],
     blotName: "custom_mention",
     fixMentionsToQuill: true,
+    spaceAfterInsert: false,
     renderLoading: handleLoadingMentionEvent,
     source: handleFetchMentionEvent,
   }
