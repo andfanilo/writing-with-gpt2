@@ -4,22 +4,30 @@
 
 ## Development
 
-#### Backend
+- Ensure you have [Python 3.6/3.7](https://www.python.org/downloads/), [Node.js](https://nodejs.org), and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed.
 
-Make sure you are in the `src` folder:
+#### Python Backend
+
+Make sure you are in the `backend` folder:
 
 ```sh
 cd backend/
 ```
 
-Install environment
+Install a virtual environment:
 
 ```sh
-#python3 -m venv venv
-#. venv/bin/activate
+# If using venv
+python3 -m venv venv
+. venv/bin/activate
+
+# If using conda
 conda create -n write-with-transformer python=3.7
 conda activate write-with-transformer
+
+# When environment is activated
 pip install -r requirements.txt
+python app.py
 ```
 
 To run in hot module reloading mode:
@@ -39,7 +47,14 @@ Configuration is made via environment variable or `.env` file. Available are:
   - `1558M`: the "extra large", true model
   - a custom folder inside the `models` folder.
 
-#### Frontend
+NB: maybe you will get `No such file or directory: 'checkpoint\\run1\\hparams.json'` so for this:
+
+```sh
+mkdir -p checkpoint/
+cp -r models/345M checkpoint/run1
+```
+
+#### React Frontend
 
 Make sure you are in the frontend folder, and ensure backend API is working.
 
@@ -47,16 +62,9 @@ Make sure you are in the frontend folder, and ensure backend API is working.
 cd frontend/
 ```
 
-First install dependencies:
-
 ```sh
-npm install
-```
-
-To run in hot module reloading mode:
-
-```sh
-npm run start
+npm install # Install npm dependencies
+npm run start # Start Webpack dev server
 ```
 
 Web app now available on http://localhost:3000.
@@ -65,15 +73,8 @@ To create a production build:
 
 ```sh
 npm run build
-```
-
-Test the production bundle:
-
-```sh
 serve -s build
 ```
-
-Move the `build` folder contents to your server.
 
 ## References
 
@@ -86,3 +87,4 @@ Move the `build` folder contents to your server.
 - [Cloning Medium with Parchment](https://quilljs.com/guides/cloning-medium-with-parchment/)
 - [gpt-2-cloud-run](https://github.com/minimaxir/gpt-2-cloud-run)
 - [How To Make Custom AI-Generated Text With GPT-2](https://minimaxir.com/2019/09/howto-gpt2/)
+- [How to generate text without fintetune?](https://github.com/minimaxir/gpt-2-simple/issues/10)
