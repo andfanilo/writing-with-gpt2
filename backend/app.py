@@ -60,6 +60,7 @@ def generate_sentences(body: InputSentence):
         return []
 
     prefix = body.text[-body.lengthprefix :]
+    print("Request: ", body)
 
     generated = ai.generate(
         n=body.nsamples,
@@ -70,6 +71,7 @@ def generate_sentences(body: InputSentence):
         top_p=body.top_p,
         return_as_list=True,
     )
+    print("Generated: ", generated)
 
     return [{"id": ind, "value": v.split("@", 1)[1]} for ind, v in enumerate(generated)]
 
