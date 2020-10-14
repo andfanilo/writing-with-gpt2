@@ -6,7 +6,7 @@
 
 - Ensure you have [Python 3.6/3.7](https://www.python.org/downloads/), [Node.js](https://nodejs.org), and [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed.
 
-#### Python Backend
+### Python Backend
 
 Make sure you are in the `backend` folder:
 
@@ -43,21 +43,23 @@ Runs on http://localhost:8000. You can consult interactive API on http://localho
 
 Configuration is made via environment variable or `.env` file. Available are:
 
-- **MODEL_NAME**: GPT-2 model to use. For now they all get stored in `models` folder at the root of the project. May be a pretrained (will be downloaded to `models` by `gpt-2-simple`) or finetuned model in folder in `models`:
-  - `124M` (default): the "small" model, 500MB on disk.
-  - `355M`: the "medium" model, 1.5GB on disk
-  - `774M`: the "large" model
-  - `1558M`: the "extra large", true model
-  - a custom folder inside the `models` folder.
+- **MODEL_NAME**:
+  - to use a custom model, point to the location of the `pytorch_model.bin`.
+    You will also need to pass `config.json` through `CONFIG_FILE`.
+  - otherwise model from Huggingface's [repository of models](https://huggingface.co/), defaults to `distilgpt2`.
+- **CONFIG_FILE**: path to JSON file of model architecture.
 
-NB: maybe you will get `No such file or directory: 'checkpoint\\run1\\hparams.json'` so for this:
+#### From gpt-2-simple to Pytorch
+
+To convert gpt-2-simple model to Pytorch, see [Importing from gpt-2-simple](https://docs.aitextgen.io/gpt-2-simple/):
 
 ```sh
-mkdir -p checkpoint/
-cp -r models/345M checkpoint/run1
+transformers-cli convert --model_type gpt2 --tf_checkpoint checkpoint/run1 --pytorch_dump_output pytorch --config checkpoint/run1/hparams.json
 ```
 
-#### React Frontend
+This will put a `pytorch_model.bin` and `config.json` in the pytorch folder, which is what you'll need to pass to `.env` file to load the model.
+
+### React Frontend
 
 Make sure you are in the frontend folder, and ensure backend API is working.
 
