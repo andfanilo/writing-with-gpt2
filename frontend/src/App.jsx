@@ -4,6 +4,8 @@ import "react-quill/dist/quill.snow.css"
 import "quill-mention"
 import "quill-mention/dist/quill.mention.css"
 
+import Slider from "./components/Slider"
+
 import axios from "axios"
 import store from "store"
 
@@ -111,39 +113,30 @@ const App = () => {
     <div class="grid">
       <aside className="sidebar">
         <div>
-          <label style={{ marginRight: "1em" }}>
-            Number samples:
-            <input
-              name="numSamples"
-              type="number"
-              min="1"
-              max="50"
-              value={requestConfig.numSamples}
-              onChange={handleInputChange}
-            ></input>
-          </label>
-          <label style={{ marginRight: "1em" }}>
-            Length samples:
-            <input
-              name="lengthSample"
-              type="number"
-              min="5"
-              max="1024"
-              value={requestConfig.lengthSample}
-              onChange={handleInputChange}
-            ></input>
-          </label>
-          <label style={{ marginRight: "1em" }}>
-            Length prefix:
-            <input
-              name="lengthPrefix"
-              type="number"
-              min="5"
-              max="5000"
-              value={requestConfig.lengthPrefix}
-              onChange={handleInputChange}
-            ></input>
-          </label>
+          <Slider
+            label="Number samples:"
+            name="numSamples"
+            min="1"
+            max="50"
+            state={requestConfig.numSamples}
+            dispatch={handleInputChange}
+          />
+          <Slider
+            label="Length samples:"
+            name="lengthSample"
+            min="5"
+            max="1024"
+            state={requestConfig.lengthSample}
+            dispatch={handleInputChange}
+          />
+          <Slider
+            label="Length prefix:"
+            name="lengthPrefix"
+            min="5"
+            max="5000"
+            state={requestConfig.lengthPrefix}
+            dispatch={handleInputChange}
+          />
         </div>
         <button className="btn" onClick={() => setEditorContent("")}>
           Clear editor
