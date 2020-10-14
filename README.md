@@ -48,6 +48,7 @@ Configuration is made via environment variable or `.env` file. Available are:
     You will also need to pass `config.json` through `CONFIG_FILE`.
   - otherwise model from Huggingface's [repository of models](https://huggingface.co/), defaults to `distilgpt2`.
 - **CONFIG_FILE**: path to JSON file of model architecture.
+- **USE_GPU**: `True` to generate text from GPU.
 
 #### From gpt-2-simple to Pytorch
 
