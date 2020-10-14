@@ -108,21 +108,7 @@ const App = () => {
   ]
 
   return (
-    <div>
-      <header className="header">
-        <h1>GPT-2 editor</h1>
-      </header>
-      <section className="container">
-        <ReactQuill
-          ref={reactQuillRef}
-          theme="snow"
-          placeholder="Enter something..."
-          modules={modules}
-          formats={formats}
-          value={editorContent}
-          onChange={handleEditorContentEdit}
-        />
-      </section>
+    <div class="grid">
       <aside className="sidebar">
         <div>
           <label style={{ marginRight: "1em" }}>
@@ -159,13 +145,26 @@ const App = () => {
             ></input>
           </label>
         </div>
-        <button
-          style={{ marginTop: "1em" }}
-          onClick={() => setEditorContent("")}
-        >
+        <button className="btn" onClick={() => setEditorContent("")}>
           Clear editor
         </button>
       </aside>
+      <main className="container">
+        <header className="header">
+          <h1>GPT-2 editor</h1>
+        </header>
+        <section>
+          <ReactQuill
+            ref={reactQuillRef}
+            theme="snow"
+            placeholder="Enter something..."
+            modules={modules}
+            formats={formats}
+            value={editorContent}
+            onChange={handleEditorContentEdit}
+          />
+        </section>
+      </main>
     </div>
   )
 }

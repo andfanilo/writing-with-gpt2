@@ -1,12 +1,28 @@
-.header {
-  margin-left: 1rem;
+.grid {
+  display: grid;
+  grid-template-columns: minmax(150px, 15%) 1fr;
+  height: 100vh;
 }
 .sidebar {
-  margin-left: 1rem;
+  padding: 1rem;
 }
 .container {
-  margin: 2rem auto;
-  width: 80%;
+  padding: 1rem 2rem;
+}
+.btn {
+  margin-top: 1em;
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 1.2rem;
+  background: #ff740a;
+  padding: 0.5rem 0.7rem;
+  text-decoration: none;
+}
+.btn:hover {
+  background: #a13a02;
+  text-decoration: none;
+  cursor: pointer;
 }
 .mention {
   background-color: white;
