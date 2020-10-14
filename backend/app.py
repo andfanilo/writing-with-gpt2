@@ -12,6 +12,7 @@ from pydantic import BaseSettings
 class Settings(BaseSettings):
     model_name: str = "distilgpt2"
     config_file: str = None
+    use_gpu: bool = False
 
     class Config:
         env_file = ".env"
@@ -42,7 +43,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-ai = aitextgen(model=settings.model_name, config=settings.config_file, to_gpu=False)
+ai = aitextgen(
+    model=settings.model_name, config=settings.config_file, to_gpu=settings.use_gpu
+)
 
 
 @app.get("/api/status")
