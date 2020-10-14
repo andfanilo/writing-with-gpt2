@@ -25,6 +25,9 @@ python3 -m venv venv
 conda create -n write-with-transformer python=3.7
 conda activate write-with-transformer
 
+# On Windows I use Conda to install pytorch separately
+conda install pytorch cpuonly -c pytorch
+
 # When environment is activated
 pip install -r requirements.txt
 python app.py
@@ -36,7 +39,7 @@ To run in hot module reloading mode:
 uvicorn app:app --host 0.0.0.0 --reload
 ```
 
-Runs on http://localhost:8000.
+Runs on http://localhost:8000. You can consult interactive API on http://localhost:8000/docs.
 
 Configuration is made via environment variable or `.env` file. Available are:
 
@@ -88,3 +91,4 @@ serve -s build
 - [gpt-2-cloud-run](https://github.com/minimaxir/gpt-2-cloud-run)
 - [How To Make Custom AI-Generated Text With GPT-2](https://minimaxir.com/2019/09/howto-gpt2/)
 - [How to generate text without fintetune?](https://github.com/minimaxir/gpt-2-simple/issues/10)
+- [aitextgen](https://docs.aitextgen.io/)

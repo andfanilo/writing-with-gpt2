@@ -1,6 +1,6 @@
-gpt-2-simple
+aitextgen
+pydantic[dotenv]
 starlette==0.13.6
-tensorflow==1.15.4 # tensorflow-gpu==1.15.4
 typer==0.3.2
 ujson==3.2.0
 uvicorn==0.11.8

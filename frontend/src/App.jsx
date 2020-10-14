@@ -21,7 +21,7 @@ const App = () => {
 
   const [requestConfig, setRequestConfig] = useState({
     numSamples: 5,
-    lengthSample: 10,
+    lengthSample: 100,
     lengthPrefix: 500,
   })
 
@@ -137,8 +137,8 @@ const App = () => {
             <input
               name="lengthSample"
               type="number"
-              min="5"
-              max="5000"
+              min="100"
+              max="1024"
               value={requestConfig.lengthSample}
               onChange={handleInputChange}
             ></input>
