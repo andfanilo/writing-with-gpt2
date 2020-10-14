@@ -1,88 +1,76 @@
-import gc
-import logging
-from logging import debug
-import os
+from os import name
+from typing import List
 
-import gpt_2_simple as gpt2
-import tensorflow as tf
 import uvicorn
-from starlette.applications import Starlette
-from starlette.config import Config
-from starlette.responses import UJSONResponse
-from starlette.routing import Route
+from aitextgen import aitextgen
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from pydantic import BaseSettings
 
 
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # or any {'0', '1', '2'}
-logging.getLogger("tensorflow").setLevel(logging.FATAL)
+class Settings(BaseSettings):
+    model_name: str = "124M"
 
-response_header = {"Access-Control-Allow-Origin": "*"}
-
-config = Config(".env")
-model_name = config("MODEL_NAME", cast=str, default="124M")
-
-if not os.path.isdir(os.path.join("models", model_name)):
-    print(f"Downloading {model_name} model...")
-    gpt2.download_gpt2(
-        model_name=model_name
-    )  # model is saved into current directory under /models/124M/
-
-sess: tf.Session = gpt2.start_tf_sess(threads=1)
-gpt2.load_gpt2(sess, model_name=model_name)
-generate_count: int = 0
+    class Config:
+        env_file = ".env"
 
 
-async def status(request):
-    return UJSONResponse({"hello": "world"}, headers=response_header)
+class InputSentence(BaseModel):
+    text: str
+    nsamples: int = 5
+    lengthprefix: int = 500
+    length: int = 100
+    temperature: float = 0.7
+    top_k: float = 0
+    top_p: float = 0.9
 
 
-async def suggest(request):
-    global generate_count
-    global sess
+class OutputSuggestion(BaseModel):
+    id: int
+    value: str
 
-    params = await request.json()
 
-    if params["text"] == "":
+settings = Settings()
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+model_name = settings.model_name
+ai = aitextgen(to_gpu=False)
+
+
+@app.get("/api/status")
+def get_status():
+    return {"Hello": "World"}
+
+
+@app.post("/api/suggest", response_model=List[OutputSuggestion])
+def generate_sentences(body: InputSentence):
+
+    if body.text == "":
         return []
 
-    prefix = params["text"][-int(params.get("lengthprefix", 500)):]
+    prefix = body.text[-body.lengthprefix :]
 
-    generated = gpt2.generate(
-        sess,
-        model_name=model_name,
-        length=int(params.get("length", 10)),
-        prefix=prefix,
-        temperature=float(params.get("temperature", 0.7)),
-        top_k=int(params.get("top_k", 0)),
-        top_p=float(params.get("top_p", 0.9)),
-        nsamples=int(params.get("nsamples", 5)),
-        return_as_list=True
+    generated = ai.generate(
+        n=body.nsamples,
+        prompt=prefix,
+        max_length=body.length,
+        temperature=body.temperature,
+        top_k=body.top_k,
+        top_p=body.top_p,
+        return_as_list=True,
     )
 
-    generate_count += 1
-    if generate_count == 8:
-        # Reload model to prevent Graph/Session from going OOM
-        tf.reset_default_graph()
-        sess.close()
-        sess = gpt2.start_tf_sess(threads=1)
-        gpt2.load_gpt2(sess)
-        generate_count = 0
-
-    gc.collect()
-    return UJSONResponse(
-        [
-            {"id": ind, "value": v.split("@")[1].strip()}
-            for ind, v in enumerate(generated)
-        ]
-    )
-
-
-app = Starlette(
-    debug=True,
-    routes=[
-        Route("/api/status", status, methods=["GET"]),
-        Route("/api/suggest", suggest, methods=["POST"]),
-    ],
-)
+    return [
+        {"id": ind, "value": v.replace(prefix, "")} for ind, v in enumerate(generated)
+    ]
 
 
 if __name__ == "__main__":
