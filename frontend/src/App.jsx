@@ -40,10 +40,14 @@ const App = () => {
           lengthprefix: requestConfig.lengthPrefix,
         })
         .then((response) => {
+          console.log(JSON.stringify(response))
           const suggestions = response["data"]
           renderItem(suggestions, searchTerm)
         })
-        .catch((err) => alert(err))
+        .catch((err) => {
+          console.log(JSON.stringify(err))
+          alert(err)
+        })
     },
     [requestConfig]
   )
@@ -126,7 +130,7 @@ const App = () => {
             <input
               name="numSamples"
               type="number"
-              min="3"
+              min="1"
               max="50"
               value={requestConfig.numSamples}
               onChange={handleInputChange}
@@ -137,7 +141,7 @@ const App = () => {
             <input
               name="lengthSample"
               type="number"
-              min="100"
+              min="5"
               max="1024"
               value={requestConfig.lengthSample}
               onChange={handleInputChange}

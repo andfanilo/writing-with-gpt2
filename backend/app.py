@@ -10,7 +10,8 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    model_name: str = "124M"
+    model_name: str = "distilgpt2"
+    config_file: str = None
 
     class Config:
         env_file = ".env"
@@ -41,8 +42,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-model_name = settings.model_name
-ai = aitextgen(to_gpu=False)
+ai = aitextgen(model=settings.model_name, config=settings.config_file, to_gpu=False)
 
 
 @app.get("/api/status")
@@ -68,9 +68,7 @@ def generate_sentences(body: InputSentence):
         return_as_list=True,
     )
 
-    return [
-        {"id": ind, "value": v.replace(prefix, "")} for ind, v in enumerate(generated)
-    ]
+    return [{"id": ind, "value": v.split("@", 1)[1]} for ind, v in enumerate(generated)]
 
 
 if __name__ == "__main__":
