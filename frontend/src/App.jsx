@@ -112,32 +112,30 @@ const App = () => {
   return (
     <div class="grid">
       <aside className="sidebar">
-        <div>
-          <Slider
-            label="Number samples:"
-            name="numSamples"
-            min="1"
-            max="50"
-            state={requestConfig.numSamples}
-            dispatch={handleInputChange}
-          />
-          <Slider
-            label="Length samples:"
-            name="lengthSample"
-            min="5"
-            max="1024"
-            state={requestConfig.lengthSample}
-            dispatch={handleInputChange}
-          />
-          <Slider
-            label="Length prefix:"
-            name="lengthPrefix"
-            min="5"
-            max="5000"
-            state={requestConfig.lengthPrefix}
-            dispatch={handleInputChange}
-          />
-        </div>
+        <Slider
+          label="Number samples:"
+          name="numSamples"
+          min="1"
+          max="50"
+          state={requestConfig.numSamples}
+          dispatch={handleInputChange}
+        />
+        <Slider
+          label="Length samples:"
+          name="lengthSample"
+          min="5"
+          max="1024"
+          state={requestConfig.lengthSample}
+          dispatch={handleInputChange}
+        />
+        <Slider
+          label="Length prefix:"
+          name="lengthPrefix"
+          min="5"
+          max="5000"
+          state={requestConfig.lengthPrefix}
+          dispatch={handleInputChange}
+        />
         <button className="btn" onClick={() => setEditorContent("")}>
           Clear editor
         </button>
