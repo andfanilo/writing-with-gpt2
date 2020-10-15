@@ -20,12 +20,14 @@ const App = () => {
     store.get("editorContent", "")
   ) // HTML content of editor, optimized and usable by Quill
   const reactQuillRef = useRef() // Ref access to editor
-
+  const [collapsedSidebar, setCollapsedSidebar] = useState(true)
   const [requestConfig, setRequestConfig] = useState({
     numSamples: 5,
     lengthSample: 100,
     lengthPrefix: 500,
   })
+
+  const toggleSidebar = () => setCollapsedSidebar(!collapsedSidebar)
 
   const handleLoadingMentionEvent = useCallback(() => {
     return "Loading..."
@@ -110,40 +112,57 @@ const App = () => {
   ]
 
   return (
-    <div class="grid">
+    <div
+      style={{
+        display: "grid",
+        height: "100vh",
+        gridTemplateColumns: `${
+          collapsedSidebar ? "0" : "minmax(150px, 10%)"
+        } 1fr`,
+      }}
+    >
       <aside className="sidebar">
-        <Slider
-          label="Number samples:"
-          name="numSamples"
-          min="1"
-          max="50"
-          state={requestConfig.numSamples}
-          dispatch={handleInputChange}
-        />
-        <Slider
-          label="Length samples:"
-          name="lengthSample"
-          min="5"
-          max="1024"
-          state={requestConfig.lengthSample}
-          dispatch={handleInputChange}
-        />
-        <Slider
-          label="Length prefix:"
-          name="lengthPrefix"
-          min="5"
-          max="5000"
-          state={requestConfig.lengthPrefix}
-          dispatch={handleInputChange}
-        />
-        <button className="btn" onClick={() => setEditorContent("")}>
-          Clear editor
-        </button>
+        <div
+          className="sidebar__content"
+          style={{ display: collapsedSidebar ? "none" : "" }}
+        >
+          <h3 style={{ margin: 0 }}>Configuration</h3>
+          <Slider
+            label="Number samples:"
+            name="numSamples"
+            min="1"
+            max="50"
+            state={requestConfig.numSamples}
+            dispatch={handleInputChange}
+          />
+          <Slider
+            label="Length samples:"
+            name="lengthSample"
+            min="5"
+            max="1024"
+            state={requestConfig.lengthSample}
+            dispatch={handleInputChange}
+          />
+          <Slider
+            label="Length prefix:"
+            name="lengthPrefix"
+            min="5"
+            max="5000"
+            state={requestConfig.lengthPrefix}
+            dispatch={handleInputChange}
+          />
+          <button className="btn" onClick={() => setEditorContent("")}>
+            Clear editor
+          </button>
+        </div>
+        <div className="sidebar__control">
+          <button onClick={toggleSidebar}>
+            {collapsedSidebar ? `Open Sidebar` : `Close Sidebar`}
+          </button>
+        </div>
       </aside>
       <main className="container">
-        <header className="header">
-          <h1>GPT-2 editor</h1>
-        </header>
+        <h1>GPT-2 editor</h1>
         <section>
           <ReactQuill
             ref={reactQuillRef}

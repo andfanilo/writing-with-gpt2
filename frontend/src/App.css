@@ -1,17 +1,35 @@
-.grid {
-  display: grid;
-  grid-template-columns: minmax(150px, 15%) 1fr;
-  height: 100vh;
-}
 .sidebar {
   padding: 1rem;
+}
+.sidebar__content {
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
+  gap: 1rem;
+}
+.sidebar__control {
+  position: fixed;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1;
+}
+.sidebar__control button {
+  padding: 0.5rem;
+  cursor: pointer;
+  color: grey;
+  font-size: 1.2rem;
+  background-color: initial;
+  border: 1px solid transparent;
+}
+.sidebar__control button:hover {
+  background-color: #f0f2f6;
+  border-color: #1d2124;
 }
 .container {
   padding: 1rem 2rem;
 }
 .btn {
+  width: 7rem;
   margin-top: 1em;
   border: none;
   border-radius: 12px;
