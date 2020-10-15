@@ -22,10 +22,10 @@ class InputSentence(BaseModel):
     text: str
     nsamples: int = 5
     lengthprefix: int = 500
-    length: int = 100
+    length: int = 160
     temperature: float = 0.7
-    top_k: float = 0
-    top_p: float = 0.9
+    topk: int = 0
+    topp: float = 0.9
 
 
 class OutputSuggestion(BaseModel):
@@ -67,13 +67,13 @@ def generate_sentences(body: InputSentence):
         prompt=prefix,
         max_length=body.length,
         temperature=body.temperature,
-        top_k=body.top_k,
-        top_p=body.top_p,
+        top_k=body.topk,
+        top_p=body.topp,
         return_as_list=True,
     )
     print("Generated: ", generated)
 
-    return [{"id": ind, "value": v.split("@", 1)[1]} for ind, v in enumerate(generated)]
+    return [{"id": ind, "value": v.replace(prefix, "")} for ind, v in enumerate(generated)]
 
 
 if __name__ == "__main__":

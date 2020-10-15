@@ -22,9 +22,12 @@ const App = () => {
   const reactQuillRef = useRef() // Ref access to editor
   const [collapsedSidebar, setCollapsedSidebar] = useState(true)
   const [requestConfig, setRequestConfig] = useState({
-    numSamples: 5,
-    lengthSample: 100,
+    nSamples: 5,
     lengthPrefix: 500,
+    length: 160,
+    temperature: 0.7,
+    topk: 0,
+    topp: 0.9,
   })
 
   const toggleSidebar = () => setCollapsedSidebar(!collapsedSidebar)
@@ -35,13 +38,23 @@ const App = () => {
 
   const handleFetchMentionEvent = useCallback(
     async (searchTerm, renderItem) => {
-      const editorContentAsText = reactQuillRef.current.getEditor().getText()
+      const editorContentAsText = reactQuillRef.current
+        .getEditor()
+        .getText()
+        .trim() // removes last \n
+      const promptWithoutLastAt = editorContentAsText.substring(
+        0,
+        editorContentAsText.length - 1
+      )
       axios
         .post("/api/suggest", {
-          text: editorContentAsText,
-          nsamples: requestConfig.numSamples,
-          length: requestConfig.lengthSample,
+          text: promptWithoutLastAt,
+          nsamples: requestConfig.nSamples,
           lengthprefix: requestConfig.lengthPrefix,
+          length: requestConfig.length,
+          temperature: requestConfig.temperature,
+          topk: requestConfig.topk,
+          topp: requestConfig.topp,
         })
         .then((response) => {
           console.log(JSON.stringify(response))
@@ -129,26 +142,56 @@ const App = () => {
           <h3 style={{ margin: 0 }}>Configuration</h3>
           <Slider
             label="Number samples:"
-            name="numSamples"
+            name="nSamples"
             min="1"
             max="50"
-            state={requestConfig.numSamples}
-            dispatch={handleInputChange}
-          />
-          <Slider
-            label="Length samples:"
-            name="lengthSample"
-            min="5"
-            max="1024"
-            state={requestConfig.lengthSample}
+            step="1"
+            state={requestConfig.nSamples}
             dispatch={handleInputChange}
           />
           <Slider
             label="Length prefix:"
             name="lengthPrefix"
-            min="5"
+            min="50"
             max="5000"
+            step="50"
             state={requestConfig.lengthPrefix}
+            dispatch={handleInputChange}
+          />
+          <Slider
+            label="Length samples:"
+            name="length"
+            min="16"
+            max="1024"
+            step="16"
+            state={requestConfig.length}
+            dispatch={handleInputChange}
+          />
+          <Slider
+            label="Temperature:"
+            name="temperature"
+            min="0"
+            max="2"
+            step="0.1"
+            state={requestConfig.temperature}
+            dispatch={handleInputChange}
+          />
+          <Slider
+            label="Top k:"
+            name="topk"
+            min="0"
+            max="5"
+            step="1"
+            state={requestConfig.topk}
+            dispatch={handleInputChange}
+          />
+          <Slider
+            label="Top p:"
+            name="topp"
+            min="0"
+            max="2"
+            step="0.1"
+            state={requestConfig.topp}
             dispatch={handleInputChange}
           />
           <button className="btn" onClick={() => setEditorContent("")}>
