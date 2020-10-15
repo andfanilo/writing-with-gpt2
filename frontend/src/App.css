@@ -5,6 +5,8 @@
 }
 .sidebar {
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 .container {
   padding: 1rem 2rem;
