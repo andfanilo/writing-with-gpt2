@@ -1,6 +1,8 @@
 # Writing with GPT-2
 
-![](./diagram.png)
+![](./img/demo.png)
+
+![](./img/diagram.png)
 
 ## Development
 
