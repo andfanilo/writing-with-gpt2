@@ -24,8 +24,8 @@ python3 -m venv venv
 . venv/bin/activate
 
 # If using conda
-conda create -n write-with-transformer python=3.7
-conda activate write-with-transformer
+conda create -n write-with-gpt2 python=3.7
+conda activate write-with-gpt2
 
 # On Windows I use Conda to install pytorch separately
 conda install pytorch cpuonly -c pytorch
@@ -87,6 +87,16 @@ npm run build
 
 Now your React built app will be statically served by FastAPI on `http://localhost:8000/app` along with the other APIs. You don't need to run the Webpack devserver anymore.
 
+### Using GPU
+
+Miniconda/Anaconda recommended on Windows.
+
+conda command : `conda install pytorch cudatoolkit=10.2 -c pytorch`.
+
+If you [install manually](https://developer.nvidia.com/cuda-toolkit), you can check your currently installed CUDA toolkit version with `nvcc --version`. Once you have CUDA toolkit installed, you can verify it by running `nvidia-smi`.
+
+**Beware**: after installing CUDA, it seems you shouldn't try to update GPU driver though GeForce or else you'll have to reinstall CUDA toolkit ?
+
 ## References
 
 - [Write With Transformer](https://transformer.huggingface.co/doc/distil-gpt2)
@@ -100,3 +110,5 @@ Now your React built app will be statically served by FastAPI on `http://localho
 - [How To Make Custom AI-Generated Text With GPT-2](https://minimaxir.com/2019/09/howto-gpt2/)
 - [How to generate text without fintetune?](https://github.com/minimaxir/gpt-2-simple/issues/10)
 - [aitextgen](https://docs.aitextgen.io/)
+- [Setting up your PC/Workstation for Deep Learning: Tensorflow and PyTorch — Windows](https://towardsdatascience.com/setting-up-your-pc-workstation-for-deep-learning-tensorflow-and-pytorch-windows-9099b96035cb)
+- [CUDA Installation Guide for Microsoft Windows](https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/)
