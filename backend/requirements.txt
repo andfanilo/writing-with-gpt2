@@ -1,3 +1,4 @@
+aiofiles
 aitextgen
 pydantic[dotenv]
 starlette==0.13.6

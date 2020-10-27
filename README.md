@@ -77,12 +77,15 @@ npm run start # Start Webpack dev server
 
 Web app now available on http://localhost:3000.
 
+#### Building the frontend
+
 To create a production build:
 
 ```sh
 npm run build
-serve -s build
 ```
+
+Now your React built app will be statically served by FastAPI on `http://localhost:8000/app` along with the other APIs. You don't need to run the Webpack devserver anymore.
 
 ## References
 

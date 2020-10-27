@@ -53,6 +53,14 @@ def get_status():
     return {"Hello": "World"}
 
 
+try:
+    from fastapi.staticfiles import StaticFiles
+    app.mount("/app", StaticFiles(directory="../frontend/build", html=True), name="React-app")
+    app.mount("/static", StaticFiles(directory="../frontend/build/static"), name="React-static")
+except:
+    print("WARNING: Did not fond folder for built React app in ../frontend/build")
+
+
 @app.post("/api/suggest", response_model=List[OutputSuggestion])
 def generate_sentences(body: InputSentence):
 
