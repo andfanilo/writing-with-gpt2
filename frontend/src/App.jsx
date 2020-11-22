@@ -24,8 +24,8 @@ const App = () => {
   const [requestConfig, setRequestConfig] = useState({
     nSamples: 5,
     lengthPrefix: 500,
-    length: 160,
-    temperature: 0.7,
+    length: 96,
+    temperature: 0.9,
     topk: 0,
     topp: 0.9,
   })
@@ -41,16 +41,21 @@ const App = () => {
       const editorContentAsText = reactQuillRef.current
         .getEditor()
         .getText()
+        .replace(/[\n\r]/g, "")
+        .replace(/[‘’\u2018\u2019\u201A]/g, "'") // smart single quotes and apostrophe
+        .replace(/[“”\u201C\u201D\u201E]/g, '"') // smart double quotes
+        .replace(/\u2026/g, "...") // ellipsis
+        .replace(/[\u2013\u2014]/g, "-") // em dashes
+        .replace(/\s{2,}/gm, " ") // whitespaces
         .trim() // removes last \n
-      const promptWithoutLastAt = editorContentAsText.substring(
-        0,
+      const prefix = editorContentAsText.substring(
+        Math.max(editorContentAsText.length - requestConfig.lengthPrefix, 0),
         editorContentAsText.length - 1
       )
       axios
         .post("/api/suggest", {
-          text: promptWithoutLastAt,
+          prefix: prefix,
           nsamples: requestConfig.nSamples,
-          lengthprefix: requestConfig.lengthPrefix,
           length: requestConfig.length,
           temperature: requestConfig.temperature,
           topk: requestConfig.topk,
@@ -98,7 +103,7 @@ const App = () => {
     allowedChars: /^[A-Za-z\s]*$/,
     mentionDenotationChars: ["@"],
     blotName: "custom_mention",
-    fixMentionsToQuill: true,
+    fixMentionsToQuill: false,
     spaceAfterInsert: false,
     renderLoading: handleLoadingMentionEvent,
     source: handleFetchMentionEvent,

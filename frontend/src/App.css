@@ -44,6 +44,12 @@
   text-decoration: none;
   cursor: pointer;
 }
+.ql-mention-list-container {
+  width: 1200px;
+}
+.ql-mention-list-container-top {
+  top: 0;
+}
 .mention {
   background-color: white;
   user-select: text;

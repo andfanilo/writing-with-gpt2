@@ -1,7 +1,9 @@
-from os import name
+import gc
+
 from typing import List
 
 import uvicorn
+
 from aitextgen import aitextgen
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,13 +21,24 @@ class Settings(BaseSettings):
 
 
 class InputSentence(BaseModel):
-    text: str
+    prefix: str
     nsamples: int = 5
-    lengthprefix: int = 500
     length: int = 160
-    temperature: float = 0.7
+    temperature: float = 0.9
     topk: int = 0
     topp: float = 0.9
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "prefix": "Hello world, my name is",
+                "nsamples": 5,
+                "length": 160,
+                "temperature": 0.9,
+                "topk": 0,
+                "topp": 0.9,
+            }
+        }
 
 
 class OutputSuggestion(BaseModel):
@@ -46,32 +59,43 @@ app.add_middleware(
 ai = aitextgen(
     model=settings.model_name, config=settings.config_file, to_gpu=settings.use_gpu
 )
+generate_count = 0
 
 
 @app.get("/api/status")
-def get_status():
+async def get_status():
     return {"Hello": "World"}
 
 
 try:
     from fastapi.staticfiles import StaticFiles
-    app.mount("/app", StaticFiles(directory="../frontend/build", html=True), name="React-app")
-    app.mount("/static", StaticFiles(directory="../frontend/build/static"), name="React-static")
+
+    app.mount(
+        "/app", StaticFiles(directory="../frontend/build", html=True), name="React-app"
+    )
+    app.mount(
+        "/static",
+        StaticFiles(directory="../frontend/build/static"),
+        name="React-static",
+    )
 except:
-    print("WARNING: Did not fond folder for built React app in ../frontend/build")
+    print("WARNING: Did not found folder for built React app in ../frontend/build")
 
 
 @app.post("/api/suggest", response_model=List[OutputSuggestion])
 def generate_sentences(body: InputSentence):
+    global ai
+    global generate_count
 
-    if body.text == "":
+    if body.prefix == "":
         return []
 
-    prefix = body.text[-body.lengthprefix :]
+    prefix = body.prefix
     print("Request: ", body)
 
     generated = ai.generate(
         n=body.nsamples,
+        batch_size=body.nsamples,
         prompt=prefix,
         max_length=body.length,
         temperature=body.temperature,
@@ -81,7 +105,16 @@ def generate_sentences(body: InputSentence):
     )
     print("Generated: ", generated)
 
-    return [{"id": ind, "value": v.replace(prefix, "")} for ind, v in enumerate(generated)]
+    generate_count += 1
+    if generate_count == 8:
+        # Reload model to prevent Graph/Session from going OOM
+        generate_count = 0
+
+    gc.collect()
+
+    return [
+        {"id": ind, "value": v.replace(prefix, "")} for ind, v in enumerate(generated)
+    ]
 
 
 if __name__ == "__main__":
