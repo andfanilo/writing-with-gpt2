@@ -62,6 +62,14 @@ transformers-cli convert --model_type gpt2 --tf_checkpoint checkpoint/run1 --pyt
 
 This will put a `pytorch_model.bin` and `config.json` in the pytorch folder, which is what you'll need to pass to `.env` file to load the model.
 
+#### Streamlit Debug
+
+You can run the Streamlit app to debug the model.
+
+```
+streamlit run st_app.py
+```
+
 ### React Frontend
 
 Make sure you are in the frontend folder, and ensure backend API is working.
