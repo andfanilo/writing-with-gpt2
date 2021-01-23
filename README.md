@@ -68,6 +68,26 @@ transformers-cli convert --model_type gpt2 --tf_checkpoint checkpoint/run1 --pyt
 
 This will put a `pytorch_model.bin` and `config.json` in the pytorch folder, which is what you'll need to pass to `.env` file to load the model.
 
+#### Run gpt-2-simple version
+
+Added back the older `gpt-2-simple` version we add in `backend/gpt2_app`.
+
+To download a model: 
+
+```python
+import gpt_2_simple as gpt2
+gpt2.download_gpt2(model_name='124M')
+```
+
+To run app:
+
+```sh
+set MODEL_NAME=124M
+uvicorn aitextgen_app:app --host 0.0.0.0
+```
+
+Set `MODEL_NAME` to any model folder inside `models`, or edit `.env`.
+
 #### Streamlit Debug
 
 You can run the Streamlit app to debug the model.
