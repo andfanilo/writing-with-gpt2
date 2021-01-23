@@ -108,6 +108,9 @@ def generate_sentences(body: InputSentence):
     generate_count += 1
     if generate_count == 8:
         # Reload model to prevent Graph/Session from going OOM
+        ai = aitextgen(
+            model=settings.model_name, config=settings.config_file, to_gpu=settings.use_gpu
+        )
         generate_count = 0
 
     gc.collect()

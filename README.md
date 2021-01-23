@@ -32,13 +32,19 @@ conda install pytorch cpuonly -c pytorch
 
 # When environment is activated
 pip install -r requirements.txt
-python app.py
+python aitextgen_app.py
 ```
 
 To run in hot module reloading mode:
 
 ```sh
-uvicorn app:app --host 0.0.0.0 --reload
+uvicorn aitextgen_app:app --host 0.0.0.0 --reload
+```
+
+To run with multiple workers:
+
+```sh
+uvicorn aitextgen_app:app --host 0.0.0.0 --workers 4
 ```
 
 Runs on http://localhost:8000. You can consult interactive API on http://localhost:8000/docs.

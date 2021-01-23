@@ -1,7 +1,9 @@
 aiofiles
 aitextgen
-fastapi==0.61.1
+fastapi==0.63.0
+gpt-2-simple
 pydantic[dotenv]
+tensorflow==1.15.4 # tensorflow-gpu==1.15.4
 typer==0.3.2
 ujson==3.2.0
-uvicorn==0.11.8
+uvicorn[standard]==0.13.3
